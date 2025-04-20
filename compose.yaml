@@ -1,14 +1,14 @@
 services:
-  api:
-    build: .
-    ports:
-      - '8080:8080'
-    container_name: webflux-api
-    restart: always
-    volumes:
-      - ./data/logs:/app/logs
-    networks:
-      - elk-network
+  #  api:
+  #    build: .
+  #    ports:
+  #      - '8080:8080'
+  #    container_name: webflux-api
+  #    restart: always
+  #    volumes:
+  #      - ./data/logs:/app/logs
+  #    networks:
+  #      - elk-network
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.18.0
