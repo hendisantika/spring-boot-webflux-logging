@@ -2,6 +2,7 @@ package id.my.hendisantika.webfluxlogging.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -26,6 +27,7 @@ import org.zalando.logbook.spring.webflux.LogbookWebFilter;
  * Time: 19.52
  * To change this template use File | Settings | File Templates.
  */
+@Configuration
 @Import(LogbookWebFluxAutoConfiguration.class)
 public class LogbookConfiguration {
     @Bean

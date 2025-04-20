@@ -48,7 +48,7 @@ public class TraceController {
 
         return webClient.post()
                 .uri(MessageFormat.format("{0}/posts", JSON_PLACEHOLDER_BASE_URL))
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .body(Mono.just(post), Post.class)
                 .retrieve()
                 .bodyToMono(Post.class);
