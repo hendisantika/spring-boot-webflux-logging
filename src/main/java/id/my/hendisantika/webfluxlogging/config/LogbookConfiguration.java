@@ -3,6 +3,7 @@ package id.my.hendisantika.webfluxlogging.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.WebFilter;
 import org.zalando.logbook.Logbook;
 import org.zalando.logbook.autoconfigure.webflux.LogbookWebFluxAutoConfiguration;
@@ -30,5 +31,12 @@ public class LogbookConfiguration {
     @Bean
     public ExchangeFilterFunction logbookClientExchangeFunction(final Logbook logbook) {
         return new LogbookExchangeFilterFunction(logbook);
+    }
+
+    @Bean
+    public WebClient webClient(final ExchangeFilterFunction logbookClientExchangeFunction) {
+        return WebClient.builder()
+                .filter(logbookClientExchangeFunction)
+                .build();
     }
 }
