@@ -1,7 +1,11 @@
 package id.my.hendisantika.webfluxlogging.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.server.WebFilter;
+import org.zalando.logbook.Logbook;
 import org.zalando.logbook.autoconfigure.webflux.LogbookWebFluxAutoConfiguration;
+import org.zalando.logbook.spring.webflux.LogbookWebFilter;
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,4 +20,8 @@ import org.zalando.logbook.autoconfigure.webflux.LogbookWebFluxAutoConfiguration
  */
 @Import(LogbookWebFluxAutoConfiguration.class)
 public class LogbookConfiguration {
+    @Bean
+    public WebFilter logbookFilter(Logbook logbook) {
+        return new LogbookWebFilter(logbook);
+    }
 }
