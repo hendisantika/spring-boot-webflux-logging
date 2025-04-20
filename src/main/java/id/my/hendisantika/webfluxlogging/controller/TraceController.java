@@ -1,10 +1,14 @@
 package id.my.hendisantika.webfluxlogging.controller;
 
+import id.my.hendisantika.webfluxlogging.domain.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,4 +30,12 @@ public class TraceController {
     public static final String JSON_PLACEHOLDER_BASE_URL = "https://jsonplaceholder.typicode.com";
 
     private final WebClient webClient;
+
+    @GetMapping(value = "/log", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Mono<ApiResponse> getLogging() {
+        //Call webclient
+        var postResponse = createPost();
+
+        return postResponse.flatMap(pt -> Mono.just(new ApiResponse(pt, "response")));
+    }
 }
