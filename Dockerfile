@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:25-jre
 LABEL authors="hendisantika"
 LABEL org.opencontainers.image.authors="bootlabs"
 
@@ -6,9 +6,9 @@ LABEL org.opencontainers.image.authors="bootlabs"
 WORKDIR /app
 
 # Refer to Maven build -> finalName
-ARG JAR_FILE=target/logging-spring-webflux-*.jar
+ARG JAR_FILE=target/webflux-logging-*.jar
 
-# cp target/logging-spring-webflux-0.0.1-SNAPSHOT.jar /app/logging-spring-webflux.jar
+# cp target/webflux-logging-0.0.1-SNAPSHOT.jar /app/logging-spring-webflux.jar
 COPY ${JAR_FILE} logging-spring-webflux.jar
 
 # java -jar /app/logging-spring-webflux.jar
