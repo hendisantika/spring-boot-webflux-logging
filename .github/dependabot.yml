@@ -1,16 +1,79 @@
 version: 2
 updates:
+  # Maven dependencies (pom.xml) and Maven wrapper
   - package-ecosystem: maven
     directory: "/"
     schedule:
       interval: daily
-      time: '05:00'
+      time: "05:00"
       timezone: Asia/Jakarta
     open-pull-requests-limit: 10
-  - package-ecosystem: "github-actions"
+    commit-message:
+      prefix: "build"
+      include: "scope"
+    groups:
+      spring-boot:
+        patterns:
+          - "org.springframework*"
+      logbook:
+        patterns:
+          - "org.zalando*"
+      test-dependencies:
+        patterns:
+          - "io.projectreactor:reactor-test"
+          - "org.junit*"
+          - "org.mockito*"
+      maven-plugins-and-wrapper:
+        patterns:
+          - "org.apache.maven*"
+          - "*maven-plugin*"
+
+  # GitHub Actions used by the workflows
+  - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: "daily"
-      time: '05:00'
+      interval: daily
+      time: "05:00"
       timezone: Asia/Jakarta
     open-pull-requests-limit: 10
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
+  # Base image in Dockerfile (eclipse-temurin)
+  - package-ecosystem: docker
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "05:00"
+      timezone: Asia/Jakarta
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "build"
+      include: "scope"
+    ignore:
+      # Stay on the JDK 25 line; bump major Java versions deliberately
+      - dependency-name: "eclipse-temurin"
+        update-types: [ "version-update:semver-major" ]
+
+  # ELK images in compose.yaml
+  - package-ecosystem: docker-compose
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "05:00"
+      timezone: Asia/Jakarta
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "build"
+      include: "scope"
+    groups:
+      elk-stack:
+        patterns:
+          - "*"
