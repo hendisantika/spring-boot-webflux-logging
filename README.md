@@ -1,5 +1,9 @@
 # Spring Boot WebFlux Logging
 
+[![Java CI with Maven](https://github.com/hendisantika/spring-boot-webflux-logging/actions/workflows/maven.yml/badge.svg)](https://github.com/hendisantika/spring-boot-webflux-logging/actions/workflows/maven.yml)
+![Java](https://img.shields.io/badge/Java-25-orange)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.2-brightgreen)
+
 A demonstration project showcasing comprehensive HTTP request/response logging in a Spring WebFlux application with
 ELK (Elasticsearch, Logstash, Kibana) stack integration.
 
@@ -19,18 +23,19 @@ Zalando's Logbook library. It includes integration with the ELK stack for centra
 
 ## Technologies
 
-- Java 21
-- Spring Boot 3.4.4
-- Spring WebFlux
-- Zalando Logbook
+- Java 25 (Eclipse Temurin)
+- Spring Boot 4.1.2
+- Spring WebFlux & WebClient
+- Jackson 3 (`tools.jackson`)
+- Zalando Logbook 4.2.0
 - Logstash Logback Encoder
 - ELK Stack (Elasticsearch, Logstash, Kibana) 8.18.0
 - Docker & Docker Compose
 
 ## Prerequisites
 
-- Java 21 or higher
-- Maven
+- JDK 25 or higher
+- Maven 3.9+ (or use the bundled Maven Wrapper `./mvnw`)
 - Docker and Docker Compose (for running the ELK stack)
 
 ## Getting Started
@@ -39,28 +44,32 @@ Zalando's Logbook library. It includes integration with the ELK stack for centra
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/spring-boot-webflux-logging.git
+   git clone https://github.com/hendisantika/spring-boot-webflux-logging.git
    cd spring-boot-webflux-logging
    ```
 
 2. Build the application:
    ```bash
-   mvn clean package
+   ./mvnw clean package
    ```
 
 3. Run the application:
    ```bash
-   mvn clean spring-boot:run
+   ./mvnw spring-boot:run
    ```
 
 ### Running with Docker Compose
 
 To run the application with the ELK stack:
 
-1. Uncomment the API service in the `compose.yaml` file
-2. Run Docker Compose:
+1. Build the JAR (the Docker image is based on `eclipse-temurin:25-jre`):
    ```bash
-   docker-compose up -d
+   ./mvnw clean package
+   ```
+2. Uncomment the API service in the `compose.yaml` file
+3. Run Docker Compose:
+   ```bash
+   docker compose up -d
    ```
 
 ## API Endpoints
@@ -101,6 +110,29 @@ http://localhost:5601
 - `src/main/resources/application.yml` - Application configuration with Logbook settings
 - `docker/conf/logstash.conf` - Logstash configuration
 - `compose.yaml` - Docker Compose configuration for the ELK stack
+
+## Continuous Integration
+
+GitHub Actions ([`.github/workflows/maven.yml`](.github/workflows/maven.yml)) runs on every push and pull request to
+`main` (and manually via *workflow_dispatch*):
+
+- Sets up Temurin JDK 25 with Maven dependency caching
+- Builds and tests with `./mvnw -B -ntp clean verify`
+- Uploads surefire reports when the build fails
+- Submits the Maven dependency graph to GitHub on pushes (improves Dependabot alerts)
+
+## Dependency Updates
+
+Dependabot ([`.github/dependabot.yml`](.github/dependabot.yml)) keeps dependencies current:
+
+| Ecosystem      | Schedule              | Grouping                                                         |
+|----------------|-----------------------|------------------------------------------------------------------|
+| Maven          | Daily, 05:00 WIB      | Spring, Logbook, test dependencies, Maven plugins & wrapper      |
+| GitHub Actions | Daily, 05:00 WIB      | All actions in one PR                                            |
+| Docker         | Weekly (Monday)       | `eclipse-temurin` base image, major Java bumps ignored           |
+| Docker Compose | Weekly (Monday)       | ELK stack images in one PR                                       |
+
+Commit messages follow Conventional Commits (`build(deps): ...`, `ci(deps): ...`).
 
 ## License
 
