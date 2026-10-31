@@ -1,6 +1,6 @@
 package id.my.hendisantika.webfluxlogging.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -48,8 +48,8 @@ public class LogbookConfiguration {
     }
 
     @Bean
-    public Sink sink(ObjectMapper objectMapper) {
-        HttpLogFormatter formatter = new JsonHttpLogFormatter(objectMapper);
+    public Sink sink(JsonMapper jsonMapper) {
+        HttpLogFormatter formatter = new JsonHttpLogFormatter(jsonMapper);
         return new LogstashLogbackSink(formatter);
     }
 }
